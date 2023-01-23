@@ -1,79 +1,85 @@
-# 81065808	
+# 81239413
+class DequeException(Exception):
+    pass
+
+
 class CircularDeque:
-    def __init__(self, m: int):
-        self.m = m
-        self.queue = [None] * m
+    def __init__(self, size: int):
+        self.size = size
+        self.queue = [None] * size
         self.head = self.tail = -1
 
     def is_empty(self):
         return self.head == -1
 
     def is_full(self):
-        return (self.tail + 1) % self.m == self.head
+        return (self.tail + 1) % self.size == self.head
 
     def push_front(self, item):
         if self.is_full():
-            return "error"
+            raise DequeException("Deque is full")
         if self.is_empty():
             self.head = 0
             self.tail = 0
         else:
-            self.head = (self.head - 1 + self.m) % self.m
+            self.head = (self.head - 1 + self.size) % self.size
         self.queue[self.head] = item
 
     def push_back(self, item):
         if self.is_full():
-            return "error"
+            raise DequeException("Deque is full")
         if self.is_empty():
             self.head = 0
             self.tail = 0
         else:
-            self.tail = (self.tail + 1) % self.m
+            self.tail = (self.tail + 1) % self.size
         self.queue[self.tail] = item
 
     def pop_front(self):
         if self.is_empty():
-            return "error"
+            raise DequeException("Deque is empty")
         item = self.queue[self.head]
         if self.head == self.tail:
             self.head = -1
             self.tail = -1
         else:
-            self.head = (self.head + 1) % self.m
+            self.head = (self.head + 1) % self.size
         return item
 
     def pop_back(self):
         if self.is_empty():
-            return "error"
+            raise DequeException("Deque is empty")
         item = self.queue[self.tail]
         if self.head == self.tail:
             self.head = -1
             self.tail = -1
         else:
-            self.tail = (self.tail - 1 + self.m) % self.m
+            self.tail = (self.tail - 1 + self.size) % self.size
         return item
 
 
 def main():
-    n = int(input())
-    m = int(input())
-    deque = CircularDeque(m)
+    number_of_instructions = int(input())
+    max_size = int(input())
+    deque = CircularDeque(max_size)
     result = []
-    for _ in range(n):
+    INSTRUCTIONS_WITH_PARAMS = ("push_back", "push_front")
+    for _ in range(number_of_instructions):
         instruction = input().split()
-        if instruction[0] == "push_back":
-            if deque.push_back(int(instruction[1])) == "error":
+        method = getattr(deque, instruction[0])
+        if instruction[0] in INSTRUCTIONS_WITH_PARAMS:
+            try:
+                method(instruction[1])
+            except DequeException:
                 result.append("error")
-        if instruction[0] == "push_front":
-            if deque.push_front(int(instruction[1])) == "error":
+        else:
+            try:
+                result.append(method())
+            except DequeException:
                 result.append("error")
-        if instruction[0] == "pop_back":
-            result.append(deque.pop_back())
-        if instruction[0] == "pop_front":
-            result.append(deque.pop_front())
 
-    for i in result:
-        print(i)
+    for res in result:
+        print(res)
 
 
 if __name__ == '__main__':
