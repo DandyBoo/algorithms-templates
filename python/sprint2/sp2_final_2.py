@@ -1,4 +1,4 @@
-# 81277540
+# 81295457
 class Stack:
     def __init__(self):
         self.items = []
@@ -7,7 +7,10 @@ class Stack:
         self.items.append(item)
 
     def pop(self):
-        return self.items.pop()
+        try:
+            return self.items.pop()
+        except IndexError:
+            raise IndexError("Error: stack is empty")
 
 
 if __name__ == '__main__':
@@ -20,7 +23,7 @@ if __name__ == '__main__':
         '/': lambda a, b: a // b
     }
     for data in expression:
-        if data in '+-*/':
+        if data in OPERATORS.keys():
             op2 = stack.pop()
             op1 = stack.pop()
             res = OPERATORS[data]

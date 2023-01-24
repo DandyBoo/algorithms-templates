@@ -1,5 +1,5 @@
 # 81239413
-class DequeException(Exception):
+class DequeError(Exception):
     pass
 
 
@@ -17,7 +17,7 @@ class CircularDeque:
 
     def push_front(self, item):
         if self.is_full():
-            raise DequeException("Deque is full")
+            raise DequeError("Deque is full")
         if self.is_empty():
             self.head = 0
             self.tail = 0
@@ -27,7 +27,7 @@ class CircularDeque:
 
     def push_back(self, item):
         if self.is_full():
-            raise DequeException("Deque is full")
+            raise DequeError("Deque is full")
         if self.is_empty():
             self.head = 0
             self.tail = 0
@@ -37,7 +37,7 @@ class CircularDeque:
 
     def pop_front(self):
         if self.is_empty():
-            raise DequeException("Deque is empty")
+            raise DequeError("Deque is empty")
         item = self.queue[self.head]
         if self.head == self.tail:
             self.head = -1
@@ -48,7 +48,7 @@ class CircularDeque:
 
     def pop_back(self):
         if self.is_empty():
-            raise DequeException("Deque is empty")
+            raise DequeError("Deque is empty")
         item = self.queue[self.tail]
         if self.head == self.tail:
             self.head = -1
@@ -70,12 +70,12 @@ def main():
         if instruction[0] in INSTRUCTIONS_WITH_PARAMS:
             try:
                 method(instruction[1])
-            except DequeException:
+            except DequeError:
                 result.append("error")
         else:
             try:
                 result.append(method())
-            except DequeException:
+            except DequeError:
                 result.append("error")
 
     for res in result:
