@@ -24,16 +24,20 @@
 #     print(i)
 
 # 2nd way
-def generate_parenthesis(control, left, right, prefix):
+def bracket_generator(control, left, right, prefix):
     if left == 0 and right == 0:
-        print(prefix)
+        # print(prefix)
+        yield prefix
+
     else:
         if left > 0:
-            generate_parenthesis(control + 1, left - 1, right, prefix + '(')
+            yield from bracket_generator(control + 1, left - 1, right, prefix + '(')
+
         if control > 0 and right > 0:
-            generate_parenthesis(control - 1, left, right - 1, prefix + ')')
+            yield from bracket_generator(control - 1, left, right - 1, prefix + ')')
 
 
-n = left = right = int(input())
+left = right = int(input())
 control = 0
-generate_parenthesis(control, left, right, '')
+for i in bracket_generator(control, left, right, ''):
+    print(i)
