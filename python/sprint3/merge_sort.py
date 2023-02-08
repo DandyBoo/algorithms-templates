@@ -23,4 +23,4 @@ def mergesort(L):
     return out
 
 
-print(mergesort([4, 3, 2, 1]))
+print(mergesort([5, 4, 3, 2, 1]))
