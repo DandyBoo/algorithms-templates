@@ -1,9 +1,10 @@
+# 82018687
 from dataclasses import dataclass
 
 
 @dataclass
 class Participant:
-    # Эксперимент по снижению потребляемой памяти:
+    # Эксперимент по снижению используемой памяти:
     __slots__ = ['name', 'solved', 'penalty']
     name: str
     solved: int
@@ -19,27 +20,25 @@ class Participant:
         )
 
 
-def quicksort(array, low, high):
+def quicksort(arr, low, high):
+    if low >= high:
+        return
 
-    def _quicksort(low, high):
-        if low >= high:
-            return
-        left = low
-        right = high
-        pivot = array[(right + left) // 2]
-        while left <= right:
-            while array[left] < pivot:
-                left += 1
-            while array[right] > pivot:
-                right -= 1
-            if left <= right:
-                array[left], array[right] = array[right], array[left]
-                left += 1
-                right -= 1
-        _quicksort(low, right)
-        _quicksort(left, high)
+    left, right = low, high
+    pivot = arr[(low + high) // 2]
 
-    _quicksort(low, high - 1)
+    while left <= right:
+        while arr[left] < pivot:
+            left += 1
+        while arr[right] > pivot:
+            right -= 1
+        if left <= right:
+            arr[left], arr[right] = arr[right], arr[left]
+            left += 1
+            right -= 1
+
+    quicksort(arr, low=low, high=right)
+    quicksort(arr, low=left, high=high)
 
 
 if __name__ == '__main__':
@@ -50,6 +49,6 @@ if __name__ == '__main__':
         name, solved, penalty = input().split()
         results.append(Participant(name, int(solved), int(penalty)))
 
-    quicksort(results, low=0, high=n)
+    quicksort(results, low=0, high=n-1)
 
     print(*results, sep='\n')
