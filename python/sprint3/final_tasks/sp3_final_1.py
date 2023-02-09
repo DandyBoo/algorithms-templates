@@ -1,12 +1,15 @@
-# 81912899
-def broken_search(nums, target) -> int:
+# 82025025
+from typing import List
+
+
+def broken_search(nums: List, target: int) -> int:
     start_index = 0
     end_index = len(nums) - 1
     while start_index <= end_index:
         middle = (start_index + end_index) // 2
         if nums[middle] == target:
             return middle
-        elif nums[start_index] <= nums[middle]:
+        if nums[start_index] <= nums[middle]:
             if nums[start_index] <= target < nums[middle]:
                 end_index = middle - 1
             else:
